@@ -49,4 +49,33 @@ int batteryIsOk(float temperature, float soc, float chargeRate) {
 int main() {
   assert(batteryIsOk(25, 70, 0.7));
   assert(!batteryIsOk(50, 85, 0));
+
+  assert(batteryIsOk(25, 50, 0.5));
+  assert(!batteryIsOk(25, 50, -0.1));
+  assert(!batteryIsOk(25, 50, 1));
+  assert(!batteryIsOk(25, 10, 0.5));
+  assert(!batteryIsOk(25, 10, -0.1));
+  assert(!batteryIsOk(25, 10, 1));
+  assert(!batteryIsOk(25, 100, 0.5));
+  assert(!batteryIsOk(25, 100, -0.1));
+  assert(!batteryIsOk(25, 100, 1));
+  assert(!batteryIsOk(-5, 50, 0.5));
+  assert(!batteryIsOk(-5, 50, -0.1));
+  assert(!batteryIsOk(-5, 50, 1));
+  assert(!batteryIsOk(-5, 10, 0.5));
+  assert(!batteryIsOk(-5, 10, -0.1));
+  assert(!batteryIsOk(-5, 10, 1));
+  assert(!batteryIsOk(-5, 100, 0.5));
+  assert(!batteryIsOk(-5, 100, -0.1));
+  assert(!batteryIsOk(-5, 100, 1));
+  assert(!batteryIsOk(60, 50, 0.5));
+  assert(!batteryIsOk(60, 50, -0.1));
+  assert(!batteryIsOk(60, 50, 1));
+  assert(!batteryIsOk(60, 10, 0.5));
+  assert(!batteryIsOk(60, 10, -0.1));
+  assert(!batteryIsOk(60, 10, 1));
+  assert(!batteryIsOk(60, 100, 0.5));
+  assert(!batteryIsOk(60, 100, -0.1));
+  assert(!batteryIsOk(60, 100, 1));
+
 }

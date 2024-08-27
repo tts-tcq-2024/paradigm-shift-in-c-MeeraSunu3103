@@ -5,8 +5,13 @@ char parameter[3][25] = {"Temperature","State of Charge","Charge rate"};
 int high[3] = {45,80,0.8};
 int low[3] = {0,20,0};
 
+void printResult(int index) {
+  printf("%s is out of range!\n", parameter[index]);
+}
+
 int parameterIsOk(float value, int index) {
   if(value < low[index] || value > high[index]) {
+    printResult(index);
     return 0;
   } else {
     return 1;

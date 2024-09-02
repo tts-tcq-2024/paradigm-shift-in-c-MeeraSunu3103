@@ -1,36 +1,29 @@
 #include <stdio.h>
 #include <assert.h>
 
-char parameter[3][25] = {"Temperature","State of Charge","Charge rate"};
-float high[3] = {45,80,0.8};
-float low[3] = {0,20,0.5};
-int first[3] = {0,0,0};
-char breach[3][4] = {".","low","high"};
-int i;
+/* structure type for battery parameters and all related values */
+typedef struct 
+{
+  char *parameterName;
+  float currentValue;
+  float lowerLimit;
+  float upperLimit;
+  char *currentStatus;
+}batteryConditionParameter;
 
-void printBatteryOk() {
-  printf("Battery is ok - all parameters are within recommended limits\n");
-}
-
-void printBatteryNotOk() {
-  int ix;
-  for(i = 0; i < 3; ++i)
-  {
-      if(first[i] > 0) {
-          ix = i;
-          break;
-      } else {
-          continue;
-      }
+void printBatteryCondition(batteryConditionParameter batteryParameterList[]) {
+  int i;
+  for(i = 0; i < 3; ++i) {
+    printf(" %s value of %f is %s ;", batteryParameterList[i].parameterName, batteryParameterList[i].currentValue, batteryParameterList[i].currentStatus);
   }
-  printf("%s is too %s!\n", parameter[ix], breach[first[ix]]);
+  printf("\n\n");
 }
 
-int parameterIsOk(float value, int index) {
-  if(value < low[index]) {
-    first[index] = 1;
-  } else if(value > high[index]) {
-    first[index] = 2;
+int batteryParameterIsOk(batteryConditionParameter *parameterToBeChecked) {
+  if(parameterToBeChecked->currentValue < parameterToBeChecked->lowerLimit) {
+    parameterToBeChecked->currentStatus = "too low";
+  } else if(parameterToBeChecked->currentValue > parameterToBeChecked->upperLimit) {
+    parameterToBeChecked->currentStatus = "too high";
   } else {
     return 1;
   }
@@ -38,17 +31,28 @@ int parameterIsOk(float value, int index) {
 }
 
 int batteryIsOk(float temperature, float soc, float chargeRate) {
-  if(((parameterIsOk(temperature, 0)) + (parameterIsOk(soc, 1)) + (parameterIsOk(chargeRate, 2))) == 3) {
-    printBatteryOk();
-    return 1;
-  } else {
-    printBatteryNotOk();
-    for(i = 0; i < 3; ++i)
-    {
-      first[i] = 0;
+  batteryConditionParameter batteryParameterList[3];
+  char batteryParameterNames[3][25] = {"Temperature","State of Charge","Charge rate"};
+  float batteryParameterCurrentValues[3] = {temperature,soc,chargeRate};
+  float batteryParametersUpperLimits[3] = {45,80,0.8};
+  float batteryParametersLowerLimits[3] = {0,20,0.5};
+  int noOfOKParameters = 0;
+  int i;
+  
+  for(i = 0; i < 3; ++i) {
+    batteryParameterList[i].parameterName = batteryParameterNames[i];
+    batteryParameterList[i].currentValue = batteryParameterCurrentValues[i];
+    batteryParameterList[i].lowerLimit = batteryParametersLowerLimits[i];
+    batteryParameterList[i].upperLimit = batteryParametersUpperLimits[i];
+    batteryParameterList[i].currentStatus = "OK"; 
+    
+    if(batteryParameterIsOk(&batteryParameterList[i])) {
+        ++noOfOKParameters;
     }
-    return 0;
   }
+  
+  printBatteryCondition(batteryParameterList);
+  return (noOfOKParameters == 3);
 }
 
 int main() {

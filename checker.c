@@ -68,31 +68,34 @@ int batteryIsOk(float temperature, float soc, float chargeRate) {
   return (noOfOKParameters == 3);
 }
 
-/* Function Name:  
-   Function Description:  
-   Return Value: */
-void testBatteryCondition(float *parameter1ValuesList, float *parameter2ValuesList, float *parameter3ValuesList) {
-  int i,j,k; /* simple loop counters */
-  
-  /* Testing the battery condition with OK, low and high values of battery parameters by looping through them */
-  for(i = 0; i < 3; ++i) {
-    for(j = 0; j < 3; ++j) {
-      for(k = 0; k < 3; ++k) {
-        if((i+j+k) == 0) {
-          assert(batteryIsOk(parameter1ValuesList[i], parameter2ValuesList[j], parameter3ValuesList[k]));      
-        } else {
-          assert(!batteryIsOk(parameter1ValuesList[i], parameter2ValuesList[j], parameter3ValuesList[k]));      
-        }  
-      }    
-    }  
-  }
-}
-
 int main() {
-  /* list of OK, low and high values of battery parameters */
-  float valuesTemperature[3] = {25,-5,60};
-  float valuesStateOfCharge[3] = {50,10,100};
-  float valuesChargeRate[3] = {0.6,0.1,1};
-  
-  testBatteryCondition(valuesTemperature, valuesStateOfCharge, valuesChargeRate);
+  /* Testing the battery condition with OK, low and high values of battery parameters */
+  assert(batteryIsOk(25, 50, 0.5));
+  assert(!batteryIsOk(25, 50, 0.1));
+  assert(!batteryIsOk(25, 50, 1));
+  assert(!batteryIsOk(25, 10, 0.5));
+  assert(!batteryIsOk(25, 10, 0.1));
+  assert(!batteryIsOk(25, 10, 1));
+  assert(!batteryIsOk(25, 100, 0.5));
+  assert(!batteryIsOk(25, 100, 0.1));
+  assert(!batteryIsOk(25, 100, 1));
+  assert(!batteryIsOk(-5, 50, 0.5));
+  assert(!batteryIsOk(-5, 50, 0.1));
+  assert(!batteryIsOk(-5, 50, 1));
+  assert(!batteryIsOk(-5, 10, 0.5));
+  assert(!batteryIsOk(-5, 10, 0.1));
+  assert(!batteryIsOk(-5, 10, 1));
+  assert(!batteryIsOk(-5, 100, 0.5));
+  assert(!batteryIsOk(-5, 100, 0.1));
+  assert(!batteryIsOk(-5, 100, 1));
+  assert(!batteryIsOk(60, 50, 0.5));
+  assert(!batteryIsOk(60, 50, 0.1));
+  assert(!batteryIsOk(60, 50, 1));
+  assert(!batteryIsOk(60, 10, 0.5));
+  assert(!batteryIsOk(60, 10, 0.1));
+  assert(!batteryIsOk(60, 10, 1));
+  assert(!batteryIsOk(60, 100, 0.5));
+  assert(!batteryIsOk(60, 100, 0.1));
+  assert(!batteryIsOk(60, 100, 1));
+
 }

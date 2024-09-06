@@ -70,32 +70,36 @@ int batteryIsOk(float temperature, float soc, float chargeRate) {
 
 int main() {
   /* Testing the battery condition with OK, low and high values of battery parameters */
-  assert(batteryIsOk(25, 50, 0.5));
-  assert(!batteryIsOk(25, 50, 0.1));
-  assert(!batteryIsOk(25, 50, 1));
-  assert(!batteryIsOk(25, 10, 0.5));
-  assert(!batteryIsOk(25, 10, 0.1));
-  assert(!batteryIsOk(25, 10, 1));
-  assert(!batteryIsOk(25, 100, 0.5));
-  assert(!batteryIsOk(25, 100, 0.1));
-  assert(!batteryIsOk(25, 100, 1));
-  assert(!batteryIsOk(-5, 50, 0.5));
-  assert(!batteryIsOk(-5, 50, 0.1));
-  assert(!batteryIsOk(-5, 50, 1));
-  assert(!batteryIsOk(-5, 10, 0.5));
-  assert(!batteryIsOk(-5, 10, 0.1));
-  assert(!batteryIsOk(-5, 10, 1));
-  assert(!batteryIsOk(-5, 100, 0.5));
-  assert(!batteryIsOk(-5, 100, 0.1));
-  assert(!batteryIsOk(-5, 100, 1));
-  assert(!batteryIsOk(60, 50, 0.5));
-  assert(!batteryIsOk(60, 50, 0.1));
-  assert(!batteryIsOk(60, 50, 1));
-  assert(!batteryIsOk(60, 10, 0.5));
-  assert(!batteryIsOk(60, 10, 0.1));
-  assert(!batteryIsOk(60, 10, 1));
-  assert(!batteryIsOk(60, 100, 0.5));
-  assert(!batteryIsOk(60, 100, 0.1));
-  assert(!batteryIsOk(60, 100, 1));
+float temperatureOkValue = 25, temperatureLowValue = -5, temperatureHighValue = 60;
+flaot stateofchargeOkValue = 50, stateofchargeLowValue = 10, stateofchargeHighValue = 100;
+flaot chargerateOkValue = 0.6, chargerateLowValue = 0.1, chargerateHighValue = 0.9;
+  
+assert(batteryIsOk(temperatureOkValue, stateofchargeOkValue, chargerateOkValue));
+assert(!batteryIsOk(temperatureOkValue, stateofchargeOkValue, chargerateLowValue));
+assert(!batteryIsOk(temperatureOkValue, stateofchargeOkValue, chargerateHighValue));
+assert(!batteryIsOk(temperatureOkValue, stateofchargeLowValue, chargerateOkValue));
+assert(!batteryIsOk(temperatureOkValue, stateofchargeLowValue, chargerateLowValue));
+assert(!batteryIsOk(temperatureOkValue, stateofchargeLowValue, chargerateHighValue));
+assert(!batteryIsOk(temperatureOkValue, stateofchargeHighValue, chargerateOkValue));
+assert(!batteryIsOk(temperatureOkValue, stateofchargeHighValue, chargerateLowValue));
+assert(!batteryIsOk(temperatureOkValue, stateofchargeHighValue, chargerateHighValue));
+assert(!batteryIsOk(temperatureLowValue, stateofchargeOkValue, chargerateOkValue));
+assert(!batteryIsOk(temperatureLowValue, stateofchargeOkValue, chargerateLowValue));
+assert(!batteryIsOk(temperatureLowValue, stateofchargeOkValue, chargerateHighValue));
+assert(!batteryIsOk(temperatureLowValue, stateofchargeLowValue, chargerateOkValue));
+assert(!batteryIsOk(temperatureLowValue, stateofchargeLowValue, chargerateLowValue));
+assert(!batteryIsOk(temperatureLowValue, stateofchargeLowValue, chargerateHighValue));
+assert(!batteryIsOk(temperatureLowValue, stateofchargeHighValue, chargerateOkValue));
+assert(!batteryIsOk(temperatureLowValue, stateofchargeHighValue, chargerateLowValue));
+assert(!batteryIsOk(temperatureLowValue, stateofchargeHighValue, chargerateHighValue));
+assert(!batteryIsOk(temperatureHighValue, stateofchargeOkValue, chargerateOkValue));
+assert(!batteryIsOk(temperatureHighValue, stateofchargeOkValue, chargerateLowValue));
+assert(!batteryIsOk(temperatureHighValue, stateofchargeOkValue, chargerateHighValue));
+assert(!batteryIsOk(temperatureHighValue, stateofchargeLowValue, chargerateOkValue));
+assert(!batteryIsOk(temperatureHighValue, stateofchargeLowValue, chargerateLowValue));
+assert(!batteryIsOk(temperatureHighValue, stateofchargeLowValue, chargerateHighValue));
+assert(!batteryIsOk(temperatureHighValue, stateofchargeHighValue, chargerateOkValue));
+assert(!batteryIsOk(temperatureHighValue, stateofchargeHighValue, chargerateLowValue));
+assert(!batteryIsOk(temperatureHighValue, stateofchargeHighValue, chargerateHighValue));
 
 }

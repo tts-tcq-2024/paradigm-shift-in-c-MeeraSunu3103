@@ -71,8 +71,8 @@ int batteryIsOk(float temperature, float soc, float chargeRate) {
 int main() {
   /* Testing the battery condition with OK, low and high values of battery parameters */
 float temperatureOkValue = 25, temperatureLowValue = -5, temperatureHighValue = 60;
-flaot stateofchargeOkValue = 50, stateofchargeLowValue = 10, stateofchargeHighValue = 100;
-flaot chargerateOkValue = 0.6, chargerateLowValue = 0.1, chargerateHighValue = 0.9;
+float stateofchargeOkValue = 50, stateofchargeLowValue = 10, stateofchargeHighValue = 100;
+float chargerateOkValue = 0.6, chargerateLowValue = 0.1, chargerateHighValue = 0.9;
   
 assert(batteryIsOk(temperatureOkValue, stateofchargeOkValue, chargerateOkValue));
 assert(!batteryIsOk(temperatureOkValue, stateofchargeOkValue, chargerateLowValue));

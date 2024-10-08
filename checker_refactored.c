@@ -130,6 +130,10 @@ void setTestValues(const float toleranceTemperature, const float toleranceStateO
   assignMatrixRowToArray(testvaluesChargeRate, testvalues, 2);
 }
 
+int okIndex(i) {
+  return ((i == 1) || (i == 2) || (i == 3));
+}
+
 int main() {
   const float toleranceTemperature = 5;
   const float toleranceStateOfCharge = 5;
@@ -142,15 +146,12 @@ int main() {
   setTestValues(toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate, 
                   testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
   
-  // printf("\n testvaluesTemperature: %f %f %f %f %f", testvaluesTemperature[0],testvaluesTemperature[1],testvaluesTemperature[2],testvaluesTemperature[3],testvaluesTemperature[4]);
-  // printf("\n testvaluesStateOfCharge: %f %f %f %f %f", testvaluesStateOfCharge[0],testvaluesStateOfCharge[1],testvaluesStateOfCharge[2],testvaluesStateOfCharge[3],testvaluesStateOfCharge[4]);
-  // printf("\n testvaluesTemperature: %f %f %f %f %f", testvaluesChargeRate[0],testvaluesChargeRate[1],testvaluesChargeRate[2],testvaluesChargeRate[3],testvaluesChargeRate[4]);
-  
   /* Testing the battery condition with OK, low and high values of battery parameters */
   for(int i = 0; i < 5; ++i) {
     for(int j = 0; j < 5; ++j) {
       for(int k = 0; k < 5; ++k) {
-        if((i == 2) && (j == 2) && (k == 2)) {
+        printf("i = %d j = %d k = %d",i,j,k);
+        if((okIndex(i) + okIndex(j) + okIndex(k)) == 3) {
           assert(batteryIsOk(testvaluesTemperature[i], toleranceTemperature, 
                               testvaluesStateOfCharge[j], toleranceStateOfCharge,
                               testvaluesChargeRate[k], toleranceChargeRate));

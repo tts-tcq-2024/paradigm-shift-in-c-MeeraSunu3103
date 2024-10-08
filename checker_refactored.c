@@ -50,13 +50,15 @@ void isbatteryParameterWithinWarningLimits(batteryConditionParameter *parameterT
 
 /* Function Name: batteryIsOk 
    Function Description: checks if the battery condition is ok by checking the condition of all battery parameters passed as arguments ; returns 1 if battery condition is OK and returns 0 if battery condition is not OK */
-int batteryIsOk(float temperature, float soc, float chargeRate) {
+int batteryIsOk(float temperature, float toleranceTemperature, 
+                  float soc, float toleranceStateOfCharge, 
+                  float chargeRate, float toleranceChargeRate) {
   batteryConditionParameter batteryParameterList[3];  /* list of structure objects to hold the details of the 3 battery parameters */
   char batteryParameterNames[3][25] = {"Temperature","State of Charge","Charge rate"};  /* List of battery parameter names ; the order of parameters given here is to be followed everywhere */
   float batteryParameterCurrentValues[3] = {temperature,soc,chargeRate}; /* List of current values of temperature, state of charge and charge rate respectively */
   float batteryParametersAbsoluteUpperLimits[3] = {45,80,0.8}; /* List of recommended absolute lower limits of temperature, state of charge and charge rate respectively */
   float batteryParametersAbsoluteLowerLimits[3] = {0,20,0.5}; /* List of recommended absolute upper limits of temperature, state of charge and charge rate respectively */
-  float batteryParameterToleranceLevels[3] = {0,5,0}; /* List of tolerance levels for temperature, state of charge and charge rate respectively */
+  float batteryParameterToleranceLevels[3] = {toleranceTemperature,toleranceStateOfCharge,toleranceChargeRate}; /* List of tolerance levels for temperature, state of charge and charge rate respectively */
   /* Note: If a tolerance level is not specified for a parameter, it must be set to 0 */
   int noOfOKParameters = 0;  /* counter to count the no. of battery parameters that are within recommended limits */
   int loopCounter; /* simple loop counter */
@@ -70,8 +72,8 @@ int batteryIsOk(float temperature, float soc, float chargeRate) {
     batteryParameterList[loopCounter].currentValue = batteryParameterCurrentValues[loopCounter];
     batteryParameterList[loopCounter].absoluteLowerLimit = batteryParametersAbsoluteLowerLimits[loopCounter];
     batteryParameterList[loopCounter].absoluteUpperLimit = batteryParametersAbsoluteUpperLimits[loopCounter];
-    batteryParameterList[loopCounter].warningLowerLimit = (batteryParametersAbsoluteLowerLimits[loopCounter] + (batteryParametersAbsoluteLowerLimits[loopCounter] * (batteryParameterToleranceLevels[loopCounter]/100.0)));
-    batteryParameterList[loopCounter].warningUpperLimit = (batteryParametersAbsoluteUpperLimits[loopCounter] - (batteryParametersAbsoluteUpperLimits[loopCounter] * (batteryParameterToleranceLevels[loopCounter]/100.0)));
+    batteryParameterList[loopCounter].warningLowerLimit = batteryParametersAbsoluteLowerLimits[loopCounter] + (batteryParametersAbsoluteUpperLimits[loopCounter] * (batteryParameterToleranceLevels[loopCounter]/100.0));
+    batteryParameterList[loopCounter].warningUpperLimit = batteryParametersAbsoluteUpperLimits[loopCounter] - (batteryParametersAbsoluteUpperLimits[loopCounter] * (batteryParameterToleranceLevels[loopCounter]/100.0));
     batteryParameterList[loopCounter].currentStatus = "OK"; 
     
     // printf("\n Warning Limits of %s: %f to %f\n",batteryParameterList[loopCounter].parameterName,batteryParameterList[loopCounter].warningLowerLimit,batteryParameterList[loopCounter].warningUpperLimit);
@@ -86,9 +88,81 @@ int batteryIsOk(float temperature, float soc, float chargeRate) {
   return (noOfOKParameters == 3);
 }
 
+void assignArrayToMatrixRow(float *array, float *matrix, int row) {
+  int loopCounter;
+  for(loopCounter = 0; loopCounter < 5; ++loopCounter) {
+    *((matrix + row * 5) + loopCounter) = array[loopCounter];
+  }
+}
+
+void assignMatrixRowToArray(float *array, float *matrix, int row) {
+  int loopCounter;
+  for(loopCounter = 0; loopCounter < 5; ++loopCounter) {
+    array[loopCounter] = *((matrix + row * 5) + loopCounter);
+  }
+}
+
+void setTestValues(const float toleranceTemperature, const float toleranceStateOfCharge, const float toleranceChargeRate,
+                      float *testvaluesTemperature, float *testvaluesStateOfCharge, float *testvaluesChargeRate) {
+  int loopCounter;
+  float batteryParameterToleranceLevels[3] = {toleranceTemperature,toleranceStateOfCharge,toleranceChargeRate};
+  float batteryParametersAbsoluteUpperLimits[3] = {45,80,0.8}; /* List of recommended absolute lower limits of temperature, state of charge and charge rate respectively */
+  float batteryParametersAbsoluteLowerLimits[3] = {0,20,0.5}; /* List of recommended absolute upper limits of temperature, state of charge and charge rate respectively */
+  float batteryParameterToleranceValues[3];
+  
+  float testvalues[3][5];
+  assignArrayToMatrixRow(testvaluesTemperature, testvalues, 0);
+  assignArrayToMatrixRow(testvaluesStateOfCharge, testvalues, 1);
+  assignArrayToMatrixRow(testvaluesChargeRate, testvalues, 2);
+  
+  for(loopCounter = 0; loopCounter < 3; ++loopCounter) {
+    batteryParameterToleranceValues[loopCounter] = batteryParametersAbsoluteUpperLimits[loopCounter] * (batteryParameterToleranceLevels[loopCounter]/100.0)/2;
+    
+    testvalues[loopCounter][0] = batteryParametersAbsoluteLowerLimits[loopCounter] - batteryParameterToleranceValues[loopCounter]; 
+    testvalues[loopCounter][1] = batteryParametersAbsoluteLowerLimits[loopCounter] + batteryParameterToleranceValues[loopCounter];
+    testvalues[loopCounter][2] = (batteryParametersAbsoluteLowerLimits[loopCounter] + batteryParametersAbsoluteUpperLimits[loopCounter])/2;
+    testvalues[loopCounter][3] = batteryParametersAbsoluteUpperLimits[loopCounter] - batteryParameterToleranceValues[loopCounter];
+    testvalues[loopCounter][4] = batteryParametersAbsoluteUpperLimits[loopCounter] + batteryParameterToleranceValues[loopCounter];
+  }
+  
+  assignMatrixRowToArray(testvaluesTemperature, testvalues, 0);
+  assignMatrixRowToArray(testvaluesStateOfCharge, testvalues, 1);
+  assignMatrixRowToArray(testvaluesChargeRate, testvalues, 2);
+}
+
 int main() {
+  const float toleranceTemperature = 5;
+  const float toleranceStateOfCharge = 5;
+  const float toleranceChargeRate = 5;
+  
+  float testvaluesTemperature[5];
+  float testvaluesStateOfCharge[5];
+  float testvaluesChargeRate[5];
+  
+  setTestValues(toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate, 
+                  testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
+  
+  // printf("\n testvaluesTemperature: %f %f %f %f %f", testvaluesTemperature[0],testvaluesTemperature[1],testvaluesTemperature[2],testvaluesTemperature[3],testvaluesTemperature[4]);
+  // printf("\n testvaluesStateOfCharge: %f %f %f %f %f", testvaluesStateOfCharge[0],testvaluesStateOfCharge[1],testvaluesStateOfCharge[2],testvaluesStateOfCharge[3],testvaluesStateOfCharge[4]);
+  // printf("\n testvaluesTemperature: %f %f %f %f %f", testvaluesChargeRate[0],testvaluesChargeRate[1],testvaluesChargeRate[2],testvaluesChargeRate[3],testvaluesChargeRate[4]);
+  
   /* Testing the battery condition with OK, low and high values of battery parameters */
-  assert(batteryIsOk(25, 79, 0.5));
-  assert(!batteryIsOk(25, 50, 0.1));
+  for(int i = 0; i < 5; ++i) {
+    for(int j = 0; j < 5; ++j) {
+      for(int k = 0; k < 5; ++k) {
+        if((i == 2) && (j == 2) && (k == 2)) {
+          assert(batteryIsOk(testvaluesTemperature[i], toleranceTemperature, 
+                              testvaluesStateOfCharge[j], toleranceStateOfCharge,
+                              testvaluesChargeRate[k], toleranceChargeRate));
+        } else {
+          assert(!batteryIsOk(testvaluesTemperature[i], toleranceTemperature, 
+                              testvaluesStateOfCharge[j], toleranceStateOfCharge,
+                              testvaluesChargeRate[k], toleranceChargeRate));
+        }
+      }
+    }
+  }
+  
+  return 0;
 
 }

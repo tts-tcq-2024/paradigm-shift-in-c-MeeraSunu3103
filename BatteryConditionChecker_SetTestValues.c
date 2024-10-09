@@ -1,3 +1,5 @@
+#include "BatteryConditionChecker.h"
+
 void assignArrayToMatrixRow(float *array, float *matrix, int row) {
   int loopCounter;
   for(loopCounter = 0; loopCounter < 5; ++loopCounter) {

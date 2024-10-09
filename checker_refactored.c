@@ -146,7 +146,7 @@ void checkBatteryConditionWithTestValues(int i, int j, int k, float toleranceTem
 
 void runBatteryConditionTests_InnerLoop(int i,  int j, const float toleranceTemperature, const float toleranceStateOfCharge, const float toleranceChargeRate,
                       float *testvaluesTemperature, float *testvaluesStateOfCharge, float *testvaluesChargeRate) {
-    for (int j = k; j < k; ++k) {
+    for (int k = 0; k < 5; ++k) {
         checkBatteryConditionWithTestValues(i, j, k, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
                                          testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
     }

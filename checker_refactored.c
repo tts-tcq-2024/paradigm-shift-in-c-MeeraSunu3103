@@ -139,6 +139,7 @@ int main() {
   const float toleranceStateOfCharge = 5;
   const float toleranceChargeRate = 5;
   
+  int expectedTestResult = 0;
   float testvaluesTemperature[5];
   float testvaluesStateOfCharge[5];
   float testvaluesChargeRate[5];
@@ -150,20 +151,14 @@ int main() {
   for(int i = 0; i < 5; ++i) {
     for(int j = 0; j < 5; ++j) {
       for(int k = 0; k < 5; ++k) {
-        printf("i = %d j = %d k = %d",i,j,k);
-        if((okIndex(i) + okIndex(j) + okIndex(k)) == 3) {
-          assert(batteryIsOk(testvaluesTemperature[i], toleranceTemperature, 
+        // printf("i = %d j = %d k = %d",i,j,k);
+        expectedTestResult = (okIndex(i) + okIndex(j) + okIndex(k)) == 3;
+        assert(batteryIsOk(testvaluesTemperature[i], toleranceTemperature, 
                               testvaluesStateOfCharge[j], toleranceStateOfCharge,
-                              testvaluesChargeRate[k], toleranceChargeRate));
-        } else {
-          assert(!batteryIsOk(testvaluesTemperature[i], toleranceTemperature, 
-                              testvaluesStateOfCharge[j], toleranceStateOfCharge,
-                              testvaluesChargeRate[k], toleranceChargeRate));
-        }
+                              testvaluesChargeRate[k], toleranceChargeRate) == expectedTestResult);
       }
     }
   }
   
   return 0;
-
 }

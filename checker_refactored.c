@@ -134,31 +134,38 @@ int okIndex(i) {
   return ((i == 1) || (i == 2) || (i == 3));
 }
 
+int checkBatteryConditionWithTestValues(int i, int j, int k, float toleranceTemperature, float toleranceStateOfCharge, float toleranceChargeRate,
+                          float *testvaluesTemperature, float *testvaluesStateOfCharge, float *testvaluesChargeRate) {
+    int okCount = okIndex(i) + okIndex(j) + okIndex(k);
+    int expectedTestResult = (okCount == 3);
+    
+    return batteryIsOk(testvaluesTemperature[i], toleranceTemperature,
+                       testvaluesStateOfCharge[j], toleranceStateOfCharge,
+                       testvaluesChargeRate[k], toleranceChargeRate) == expectedTestResult;
+}
+
 int main() {
-  const float toleranceTemperature = 5;
-  const float toleranceStateOfCharge = 5;
-  const float toleranceChargeRate = 5;
-  
-  int expectedTestResult = 0;
-  float testvaluesTemperature[5];
-  float testvaluesStateOfCharge[5];
-  float testvaluesChargeRate[5];
-  
-  setTestValues(toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate, 
+    const float toleranceTemperature = 5;
+    const float toleranceStateOfCharge = 5;
+    const float toleranceChargeRate = 5;
+
+    float testvaluesTemperature[5];
+    float testvaluesStateOfCharge[5];
+    float testvaluesChargeRate[5];
+
+    setTestValues(toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
                   testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
-  
-  /* Testing the battery condition with OK, low and high values of battery parameters */
-  for(int i = 0; i < 5; ++i) {
-    for(int j = 0; j < 5; ++j) {
-      for(int k = 0; k < 5; ++k) {
-        // printf("i = %d j = %d k = %d",i,j,k);
-        expectedTestResult = (okIndex(i) + okIndex(j) + okIndex(k)) == 3;
-        assert(batteryIsOk(testvaluesTemperature[i], toleranceTemperature, 
-                              testvaluesStateOfCharge[j], toleranceStateOfCharge,
-                              testvaluesChargeRate[k], toleranceChargeRate) == expectedTestResult);
-      }
+
+    /* Testing the battery condition with OK, low and high values of battery parameters */
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            for (int k = 0; k < 5; ++k) {
+                // Call a function to handle the battery condition check
+                assert(checkBatteryConditionWithTestValues(i, j, k, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate));
+            }
+        }
     }
-  }
-  
-  return 0;
+
+    return 0;
 }

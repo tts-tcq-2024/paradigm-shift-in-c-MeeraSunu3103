@@ -1,13 +1,5 @@
 #include "BatteryConditionChecker.h"
 
-/* prints out the status of battery parameters */
-void printBatteryParameterCondition(batteryConditionParameter batteryParameterList[]) {
-  for(int loopCounter = 0; loopCounter < 3; ++loopCounter) {
-    printf(" %s value of %f is %s ;", batteryParameterList[loopCounter].parameterName, batteryParameterList[loopCounter].currentValue, batteryParameterList[loopCounter].currentStatus);
-  }
-  printf("\n\n");
-}
-
 /* checks if the battery parameter passed as the argument is within its recommended limits and specifies the breach type, if any; returns 1 if it is within limits and returns 0 if it is out of limits */
 int isbatteryParameterWithinAbsoluteLimits(batteryConditionParameter *parameterToBeChecked) {
   if(parameterToBeChecked->currentValue < parameterToBeChecked->absoluteLowerLimit) {

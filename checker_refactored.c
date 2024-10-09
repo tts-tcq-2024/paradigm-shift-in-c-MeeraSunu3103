@@ -144,6 +144,20 @@ void checkBatteryConditionWithTestValues(int i, int j, int k, float toleranceTem
                        testvaluesChargeRate[k], toleranceChargeRate) == expectedTestResult);
 }
 
+void runBatteryConditionTests(const float toleranceTemperature, const float toleranceStateOfCharge, const float toleranceChargeRate,
+                      float *testvaluesTemperature, float *testvaluesStateOfCharge, float *testvaluesChargeRate) {
+    /* Testing the battery condition with OK, low and high values of battery parameters */
+    for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            for (int k = 0; k < 5; ++k) {
+                // Call a function to handle the battery condition check
+                checkBatteryConditionWithTestValues(i, j, k, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
+            }
+        }
+    }
+}
+
 int main() {
     const float toleranceTemperature = 5;
     const float toleranceStateOfCharge = 5;
@@ -156,16 +170,8 @@ int main() {
     setTestValues(toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
                   testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
 
-    /* Testing the battery condition with OK, low and high values of battery parameters */
-    for (int i = 0; i < 5; ++i) {
-        for (int j = 0; j < 5; ++j) {
-            for (int k = 0; k < 5; ++k) {
-                // Call a function to handle the battery condition check
-                checkBatteryConditionWithTestValues(i, j, k, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
-                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
-            }
-        }
-    }
+    runBatteryConditionTests(toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+                  testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
 
     return 0;
 }

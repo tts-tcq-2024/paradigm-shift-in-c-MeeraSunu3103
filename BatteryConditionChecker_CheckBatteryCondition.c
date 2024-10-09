@@ -1,3 +1,4 @@
+#include <stdio.h>
 /* structure type for battery parameters with all relevant properties */
 typedef struct 
 {

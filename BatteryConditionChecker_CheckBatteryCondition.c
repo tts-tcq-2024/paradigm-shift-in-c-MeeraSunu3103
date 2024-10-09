@@ -1,15 +1,4 @@
-#include <stdio.h>
-/* structure type for battery parameters with all relevant properties */
-typedef struct 
-{
-  char *parameterName; /* name of the battery parameter */
-  float currentValue; /* current value of the battery parameter */
-  float absoluteLowerLimit; /* recommended absolute lower limit of the battery parameeter */
-  float absoluteUpperLimit; /* recommended absolute upper limit of the battery parameeter */
-  float warningLowerLimit; /* warning lower limit of the battery parameeter */
-  float warningUpperLimit; /* warning upper limit of the battery parameeter */
-  char *currentStatus; /* current status of the battery parameeter */
-}batteryConditionParameter;
+#include "BatteryConditionChecker.h"
 
 /* Function Name: printBatteryCondition 
    Function Description: prints out the status of battery parameters */

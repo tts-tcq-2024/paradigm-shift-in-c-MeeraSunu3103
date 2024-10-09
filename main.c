@@ -1,3 +1,5 @@
+#include "BatteryConditionChecker.h"
+
 int main() {
     /* Change tolerance values as required for tuning */
     const float toleranceTemperature = 5;

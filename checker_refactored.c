@@ -134,14 +134,14 @@ int okIndex(i) {
   return ((i == 1) || (i == 2) || (i == 3));
 }
 
-int checkBatteryConditionWithTestValues(int i, int j, int k, float toleranceTemperature, float toleranceStateOfCharge, float toleranceChargeRate,
+void checkBatteryConditionWithTestValues(int i, int j, int k, float toleranceTemperature, float toleranceStateOfCharge, float toleranceChargeRate,
                           float *testvaluesTemperature, float *testvaluesStateOfCharge, float *testvaluesChargeRate) {
     int okCount = okIndex(i) + okIndex(j) + okIndex(k);
     int expectedTestResult = (okCount == 3);
     
-    return batteryIsOk(testvaluesTemperature[i], toleranceTemperature,
+    assert(batteryIsOk(testvaluesTemperature[i], toleranceTemperature,
                        testvaluesStateOfCharge[j], toleranceStateOfCharge,
-                       testvaluesChargeRate[k], toleranceChargeRate) == expectedTestResult;
+                       testvaluesChargeRate[k], toleranceChargeRate) == expectedTestResult);
 }
 
 int main() {
@@ -161,8 +161,8 @@ int main() {
         for (int j = 0; j < 5; ++j) {
             for (int k = 0; k < 5; ++k) {
                 // Call a function to handle the battery condition check
-                assert(checkBatteryConditionWithTestValues(i, j, k, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
-                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate));
+                checkBatteryConditionWithTestValues(i, j, k, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
             }
         }
     }

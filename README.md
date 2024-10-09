@@ -92,3 +92,6 @@ Keep in mind: Though we are starting with warning levels for all parameters, cus
 
 
 ## Approach to adding extensions
+- Added "warning limits" based on tolerance and corresponding checks: (lower limit + tolerance value) and (upper limit - tolerance level)
+- Created 5 types of test values for each battery condition parameter: high value, high warning value, ok value, low warning value, low value
+- Tuning only requires change of tolerance value in main.c and testvalues are automatically re-calculated

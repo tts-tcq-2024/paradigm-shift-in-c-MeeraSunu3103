@@ -149,11 +149,16 @@ void runBatteryConditionTests(const float toleranceTemperature, const float tole
     /* Testing the battery condition with OK, low and high values of battery parameters */
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
-            for (int k = 0; k < 5; ++k) {
-                // Call a function to handle the battery condition check
-                checkBatteryConditionWithTestValues(i, j, k, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+            checkBatteryConditionWithTestValues(i, j, 0, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
                                              testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
-            }
+            checkBatteryConditionWithTestValues(i, j, 1, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
+            checkBatteryConditionWithTestValues(i, j, 2, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
+            checkBatteryConditionWithTestValues(i, j, 3, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
+            checkBatteryConditionWithTestValues(i, j, 4, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
         }
     }
 }

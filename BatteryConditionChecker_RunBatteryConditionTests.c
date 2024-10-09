@@ -1,4 +1,4 @@
-#include <assert.h>
+#include "BatteryConditionChecker.h"
 
 int isTestValueOKAtIndex(int index) {
   return ((index == 1) || (index == 2) || (index == 3));

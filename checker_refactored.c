@@ -144,20 +144,20 @@ void checkBatteryConditionWithTestValues(int i, int j, int k, float toleranceTem
                        testvaluesChargeRate[k], toleranceChargeRate) == expectedTestResult);
 }
 
+void runBatteryConditionTests_InnerLoop(int i,  int j, const float toleranceTemperature, const float toleranceStateOfCharge, const float toleranceChargeRate,
+                      float *testvaluesTemperature, float *testvaluesStateOfCharge, float *testvaluesChargeRate) {
+    for (int j = k; j < k; ++k) {
+        checkBatteryConditionWithTestValues(i, j, k, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+                                         testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
+    }
+}
+
 void runBatteryConditionTests(const float toleranceTemperature, const float toleranceStateOfCharge, const float toleranceChargeRate,
                       float *testvaluesTemperature, float *testvaluesStateOfCharge, float *testvaluesChargeRate) {
     /* Testing the battery condition with OK, low and high values of battery parameters */
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
-            checkBatteryConditionWithTestValues(i, j, 0, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
-                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
-            checkBatteryConditionWithTestValues(i, j, 1, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
-                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
-            checkBatteryConditionWithTestValues(i, j, 2, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
-                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
-            checkBatteryConditionWithTestValues(i, j, 3, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
-                                             testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
-            checkBatteryConditionWithTestValues(i, j, 4, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
+            runBatteryConditionTests_InnerLoop(i, j, toleranceTemperature, toleranceStateOfCharge, toleranceChargeRate,
                                              testvaluesTemperature, testvaluesStateOfCharge, testvaluesChargeRate);
         }
     }
